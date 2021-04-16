@@ -20,6 +20,11 @@
 
     <!-- log4j -->
     <log4j.version>1.2.17</log4j.version>
+    <!-- junit -->
+    <junit.version>4.12</junit.version>
+
+    <!-- apache lang3 -->
+    <commons-lang3.version>3.5</commons-lang3.version>
 
     <!-- maven compile version -->
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
@@ -27,14 +32,36 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- log4j -->
       <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${log4j.version}</version>
         <scope>test</scope>
       </dependency>
+      <!-- junit -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <!-- apache common -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+    </dependency>
+  </dependencies>
 
   <build>
     <pluginManagement>
