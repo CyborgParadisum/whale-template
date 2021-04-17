@@ -6,6 +6,10 @@ import com.whale.protocol.RpcMessageEncoder;
 import com.whale.server.RpcServer;
 import com.whale.util.RpcConf;
 
+/**
+ * Rpc context.
+ * for create rpc clientFactory、rpc server
+ */
 public class RpcContext {
 
   private RpcConf conf;
