@@ -12,6 +12,7 @@
   <modules>
     <module>whale-core</module>
     <module>whale-network</module>
+    <module>whale-hanashi</module>
   </modules>
 
   <properties>
