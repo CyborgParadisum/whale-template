@@ -20,4 +20,13 @@ public class RpcConf {
   public String get(String name, String defaultValue) {
     return conf.get(name, defaultValue);
   }
+
+  // arbitrary fuc here
+  public int getNumsClientThread() {
+    return 1;
+  }
+
+  public boolean preferDirectBufs() {
+    return true;
+  }
 }
