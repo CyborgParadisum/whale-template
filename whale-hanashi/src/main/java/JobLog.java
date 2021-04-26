@@ -1,0 +1,2 @@
+public class JobLog {
+}
