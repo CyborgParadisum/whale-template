@@ -26,4 +26,8 @@ public class RpcContext {
     // todo
     return null;
   }
+
+  public RpcConf getConf() {
+    return conf;
+  }
 }
