@@ -13,6 +13,13 @@ public class NettyUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(NettyUtils.class);
 
+  /**
+   *
+   */
+  private static final int MAX_DEFAULT_NETTY_THREADS = 8;
+  private static final PooledByteBufAllocator[] _sharedPooledByteBufAllocator =
+      new PooledByteBufAllocator[2];
+
   public static PooledByteBufAllocator createPooledByteBufAllocator(
       boolean allowDirectBufs,
       boolean allowCache,
@@ -57,4 +64,24 @@ public class NettyUtils {
   public static ThreadFactory createThreadFactory(String threadPoolPrefix) {
     return new DefaultThreadFactory(threadPoolPrefix, true);
   }
+
+  public static synchronized PooledByteBufAllocator
+  getSharedPooledByteBufAllocator(
+      boolean allowDirectBuf,
+      boolean allowCache) {
+    final int index = allowCache ? 0 : 1;
+    if (_sharedPooledByteBufAllocator[index] == null) {
+      _sharedPooledByteBufAllocator[index] =
+          createPooledByteBufAllocator(allowDirectBuf,
+              allowCache, defaultThreadNum(0));
+    }
+    return _sharedPooledByteBufAllocator[index];
+  }
+
+  private static int defaultThreadNum(int usableThreadCoreNum) {
+    int availableCores = usableThreadCoreNum > 0 ?
+        usableThreadCoreNum : Runtime.getRuntime().availableProcessors();
+    return Math.min(availableCores, MAX_DEFAULT_NETTY_THREADS);
+  }
+
 }
