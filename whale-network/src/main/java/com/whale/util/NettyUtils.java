@@ -2,7 +2,9 @@ package com.whale.util;
 
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.ServerChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import java.util.concurrent.ThreadFactory;
@@ -59,6 +61,15 @@ public class NettyUtils {
   public static EventLoopGroup createEventLoopGroup(int threadNumbers, String threadPoolPrefix) {
     ThreadFactory threadFactory = createThreadFactory(threadPoolPrefix);
     return new EpollEventLoopGroup(threadNumbers);
+  }
+
+  /**
+   * Epoll implementation firstly. further add other Server channel:
+   * e.g.: NIO implementation
+   * @return Server channel
+   */
+  public static Class<? extends ServerChannel> getServerChannel() {
+    return EpollServerSocketChannel.class;
   }
 
   public static ThreadFactory createThreadFactory(String threadPoolPrefix) {
