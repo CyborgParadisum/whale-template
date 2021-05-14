@@ -2,7 +2,9 @@ package com.whale.util;
 
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.ServerChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
+import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import java.util.concurrent.ThreadFactory;
@@ -12,6 +14,13 @@ import org.slf4j.LoggerFactory;
 public class NettyUtils {
 
   private static final Logger LOG = LoggerFactory.getLogger(NettyUtils.class);
+
+  /**
+   *
+   */
+  private static final int MAX_DEFAULT_NETTY_THREADS = 8;
+  private static final PooledByteBufAllocator[] _sharedPooledByteBufAllocator =
+      new PooledByteBufAllocator[2];
 
   public static PooledByteBufAllocator createPooledByteBufAllocator(
       boolean allowDirectBufs,
@@ -54,7 +63,36 @@ public class NettyUtils {
     return new EpollEventLoopGroup(threadNumbers);
   }
 
+  /**
+   * Epoll implementation firstly. further add other Server channel:
+   * e.g.: NIO implementation
+   * @return Server channel
+   */
+  public static Class<? extends ServerChannel> getServerChannel() {
+    return EpollServerSocketChannel.class;
+  }
+
   public static ThreadFactory createThreadFactory(String threadPoolPrefix) {
     return new DefaultThreadFactory(threadPoolPrefix, true);
   }
+
+  public static synchronized PooledByteBufAllocator
+  getSharedPooledByteBufAllocator(
+      boolean allowDirectBuf,
+      boolean allowCache) {
+    final int index = allowCache ? 0 : 1;
+    if (_sharedPooledByteBufAllocator[index] == null) {
+      _sharedPooledByteBufAllocator[index] =
+          createPooledByteBufAllocator(allowDirectBuf,
+              allowCache, defaultThreadNum(0));
+    }
+    return _sharedPooledByteBufAllocator[index];
+  }
+
+  private static int defaultThreadNum(int usableThreadCoreNum) {
+    int availableCores = usableThreadCoreNum > 0 ?
+        usableThreadCoreNum : Runtime.getRuntime().availableProcessors();
+    return Math.min(availableCores, MAX_DEFAULT_NETTY_THREADS);
+  }
+
 }

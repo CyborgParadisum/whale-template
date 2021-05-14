@@ -29,4 +29,16 @@ public class RpcConf {
   public boolean preferDirectBufs() {
     return true;
   }
+
+  public boolean sharedByteBufAllocators() {
+    return true;
+  }
+
+  public boolean preferDirectBufForSharedByteBufAllocators() {
+    return true;
+  }
+
+  public int serverThreads() {
+    return 0;
+  }
 }
