@@ -2,6 +2,8 @@ import lombok.Builder;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import lombok.val;
+import network.Server;
+import network.socket.SocketServer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -16,63 +18,56 @@ import java.util.function.Supplier;
 
 @Builder
 @Log
-public class Server {
+public class JobManager {
     Map<String, String> config;
-    private int port = 414;
-
+    //    private int port = 414;
+    Server server;
     VoidSupplier afterStarted;
 
-    private ServerSocket serverSocket;
-    private Socket socket;
+//    private ServerSocket serverSocket;
+//    private Socket socket;
 
     @SneakyThrows
     public void start() {
-        int port = Integer.parseInt(config.get("port"));
-        serverSocket = new ServerSocket(port);
+        server = new SocketServer(config);
+        //        int port = Integer.parseInt(config.get("port"));
+//        serverSocket = new ServerSocket(port);
     }
 
     @SneakyThrows
     public void over(Result result) {
-        val output = new ObjectOutputStream(socket.getOutputStream());
-        output.writeObject(result);
-        output.close();
+        server.send(result);
+        log.info("over");
+        //        val output = new ObjectOutputStream(socket.getOutputStream());
+//        output.writeObject(result);
+//        output.close();
     }
 
-    public void run() throws Exception {
+    @SneakyThrows
+    public void run() {
         start();
         log.info("server start ");
-        afterStarted.apply();
-        socket = serverSocket.accept();
+//        afterStarted.apply();
+        //        socket = serverSocket.accept();
         log.info("server accept");
-        val input = socket.getInputStream();
-//        byte[] sizeB = new byte[4];
-//        input.read(sizeB);
-//        int size = ByteBuffer.wrap(sizeB).getInt();
-//        System.out.println("size " + size);
-//        byte[] buffer = new byte[size];
-//        int n;
-//        while ((n = input.read(buffer)) != -1) {
-//            System.out.println("read " + n + " bytes.");
-//        }
-//        System.out.println(buffer);
-
-//        ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
+        val input = server.receive();
         log.info("wait input");
         val in = new ObjectInputStream(input);
         Plan plan = (Plan) in.readObject();
         Plan.MyFunc<Integer, Boolean> func = plan.getFunc();
         val result = new Result();
+        log.info("calc");
         List<Integer> sushu = new ArrayList<>();
-        result.setResult(sushu);
         for (int i = plan.start; i <= plan.end; i++) {
             if (func.apply(i)) {
                 sushu.add(i);
             }
         }
+        result.setResult(sushu);
         over(result);
     }
 
-    public static void main(String[] args) throws Exception {
-
+    public void close() {
+        server.close();
     }
 }

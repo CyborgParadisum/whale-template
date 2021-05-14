@@ -1,18 +1,13 @@
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import lombok.Builder;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
 import lombok.val;
 
-import java.io.*;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * @author User
@@ -20,25 +15,11 @@ import java.util.function.Function;
 @Builder
 @Log
 public class Driver {
+
     Map<String, String> config;
-    static Plan.MyFunc<Integer, Boolean> func = (Integer n) -> {
-        if (n < 2) {
-            return false;
-        }
-        for (int i = 2; i <= Math.sqrt(n); i++) {
-            if (n % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    };
+    Plan plan ;
 
     public void run() {
-        val plan = Plan.builder()
-            .func(func)
-            .setRange(1, 100)
-            .build();
-
         submit(plan);
     }
 
@@ -50,9 +31,11 @@ public class Driver {
     @SneakyThrows
     public Result talk(Object object) {
         String host = config.get("host");
+
         int port = Integer.parseInt(config.get("port"));
 
         Socket socket = new Socket(host, port);
+
         log.info("start");
         val output = socket.getOutputStream();
 //        ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -70,20 +53,5 @@ public class Driver {
 //        output.write(funcB);
 //        output.close();
 //        socket.getInputStream();
-
-
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        String host = "localhost";
-        String port = "414";
-
-        Map config = ImmutableMap.of("host", host,
-            "port", port);
-        Driver.builder()
-            .config(config)
-            .build()
-            .run();
     }
 }

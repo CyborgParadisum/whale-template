@@ -28,8 +28,5 @@
             <version>21.0</version>
         </dependency>
     </dependencies>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
 
 </project>
