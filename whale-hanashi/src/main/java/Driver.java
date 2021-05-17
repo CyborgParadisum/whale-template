@@ -19,6 +19,10 @@ public class Driver {
     Map<String, String> config;
     Plan plan ;
 
+    public static void main(String[] args) {
+        // noop
+    }
+
     public void run() {
         submit(plan);
     }
