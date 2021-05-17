@@ -1,46 +1,84 @@
-import lombok.Builder;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import lombok.val;
-import network.Server;
+import network.socket.SocketAtomic;
 import network.socket.SocketServer;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
-@Builder
+//@Builder
 @Log
 public class JobManager {
     Map<String, String> config;
-    //    private int port = 414;
-    Server server;
-    VoidSupplier afterStarted;
+    //    Server server;
 
-//    private ServerSocket serverSocket;
-//    private Socket socket;
+    //    VoidSupplier afterStarted;
+    // https://zh.wikipedia.org/wiki/Volatile%E5%8F%98%E9%87%8F
+    volatile boolean isOpen = false;
+    SocketAtomic socketAtomic;
+    SocketServer socketServer;
+    List<Socket> socketClientList;
 
-    @SneakyThrows
-    public void start() {
-        server = new SocketServer(config);
-        //        int port = Integer.parseInt(config.get("port"));
-//        serverSocket = new ServerSocket(port);
+    public JobManager(Map config) {
+        this.config = config;
     }
 
     @SneakyThrows
-    public void over(Result result) {
-        server.send(result);
-        log.info("over");
-        //        val output = new ObjectOutputStream(socket.getOutputStream());
-//        output.writeObject(result);
-//        output.close();
+    public void start() {
+        socketAtomic = new SocketAtomic(config);
+        socketAtomic.startServer();
+        socketServer = new SocketServer(config);
+        socketServer.init();
+        isOpen = true;
+    }
+
+    @SneakyThrows
+    public void processWorker() {
+        log.info("server accept");
+//        val input = server.receive();
+        log.info("wait input");
+        val input = socketServer.receive();
+        val in = new ObjectInputStream(input);
+        Plan plan = (Plan) in.readObject();
+//        Plan.MyFunc<Integer, Boolean> func = plan.getFunc();
+//        val result = new Result();
+//        log.info("calc");
+//        List<Integer> sushu = new ArrayList<>();
+//        for (int i = plan.start; i <= plan.end; i++) {
+//            if (func.apply(i)) {
+//                sushu.add(i);
+//            }
+//        }
+
+        int end = plan.end / 2;
+        Plan plan1 = new Plan(plan.start, end, plan.func);
+        Plan plan2 = new Plan(end + 1, plan.end, plan.func);
+
+        String host = "localhost";
+        int port;
+        Socket socket1 = new Socket(host, 9001);
+        send(socket1, plan1);
+        Socket socket2 = new Socket(host, 9002);
+        send(socket2, plan2);
+        val in1 = receive(socket1);
+
+        val in2 = receive(socket2);
+        val res1 = (Result) new ObjectInputStream(in1).readObject();
+        val res2 = (Result) new ObjectInputStream(in2).readObject();
+        List<Integer> sushu = new ArrayList<>();
+        sushu.addAll((List<Integer>) res1.getResult());
+        sushu.addAll((List<Integer>) res2.getResult());
+        val result = new Result();
+        result.setResult(sushu);
+        socketServer.send(result);
     }
 
     @SneakyThrows
@@ -48,26 +86,31 @@ public class JobManager {
         start();
         log.info("server start ");
 //        afterStarted.apply();
-        //        socket = serverSocket.accept();
-        log.info("server accept");
-        val input = server.receive();
-        log.info("wait input");
-        val in = new ObjectInputStream(input);
-        Plan plan = (Plan) in.readObject();
-        Plan.MyFunc<Integer, Boolean> func = plan.getFunc();
-        val result = new Result();
-        log.info("calc");
-        List<Integer> sushu = new ArrayList<>();
-        for (int i = plan.start; i <= plan.end; i++) {
-            if (func.apply(i)) {
-                sushu.add(i);
-            }
+        while (isOpen) {
+//            val socket = socketAtomic.accept();
+            socketServer.accept();
+            processWorker();
         }
-        result.setResult(sushu);
-        over(result);
+    }
+
+    @SneakyThrows
+    public void over(Result result) {
+        log.info("over");
+        socketServer.send(result);
     }
 
     public void close() {
-        server.close();
+        isOpen = false;
+//        server.close();
+    }
+
+    public void send(Socket socket, Object object) throws IOException {
+        val output = new ObjectOutputStream(socket.getOutputStream());
+        output.writeObject(object);
+        output.flush();
+    }
+
+    public InputStream receive(Socket socket) throws IOException {
+        return socket.getInputStream();
     }
 }

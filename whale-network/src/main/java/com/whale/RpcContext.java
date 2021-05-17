@@ -5,6 +5,7 @@ import com.whale.protocol.RpcMessageDecoder;
 import com.whale.protocol.RpcMessageEncoder;
 import com.whale.server.RpcServer;
 import com.whale.util.RpcConf;
+import io.netty.bootstrap.ServerBootstrap;
 
 /**
  * Rpc context.
@@ -24,6 +25,7 @@ public class RpcContext {
 
   public RpcClient createRpcClient() {
     // todo
+    ServerBootstrap
     return null;
   }
 

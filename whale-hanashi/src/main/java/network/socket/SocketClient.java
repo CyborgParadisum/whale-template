@@ -9,19 +9,17 @@ import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.channels.ServerSocketChannel;
 import java.util.Map;
 
-public class SocketServer extends Server {
+public class SocketClient extends Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
-    private Socket socketClient;
 
     Map<String, String> config;
 
     @SneakyThrows
-    public SocketServer(Map<String, String> config) {
+    public SocketClient(Map<String, String> config) {
         this.config = config;
         init();
     }
@@ -34,8 +32,7 @@ public class SocketServer extends Server {
 
     @SneakyThrows
     public Socket accept() {
-        socket = serverSocket.accept();
-        return socket;
+        return serverSocket.accept();
     }
 
     @Override
