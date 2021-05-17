@@ -13,6 +13,7 @@
     <module>whale-core</module>
     <module>whale-network</module>
     <module>whale-hanashi</module>
+    <module>whale-thrift-network</module>
   </modules>
 
   <properties>
@@ -34,6 +35,10 @@
 
     <!-- maven compile version -->
     <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+
+    <!-- thrift version-->
+    <thrift.version>0.13.0</thrift.version>
+
   </properties>
 
   <dependencyManagement>
@@ -65,6 +70,7 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-lang3</artifactId>
         <version>${commons-lang3.version}</version>
+        <scope>provided</scope>
       </dependency>
 
       <!-- guava -->
@@ -81,6 +87,14 @@
         <artifactId>netty-all</artifactId>
         <version>4.1.51.Final</version>
       </dependency>
+
+      <!-- thrift -->
+      <dependency>
+        <groupId>org.apache.thrift</groupId>
+        <artifactId>libthrift</artifactId>
+        <version>${thrift.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -95,6 +109,7 @@
   <build>
     <pluginManagement>
       <plugins>
+        <!-- maven compiler -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -104,6 +119,14 @@
             <target>${java.version}</target>
           </configuration>
         </plugin>
+
+        <!-- thrift plugin -->
+        <plugin>
+          <groupId>org.apache.thrift.tools</groupId>
+          <artifactId>maven-thrift-plugin</artifactId>
+          <version>0.1.11</version>
+        </plugin>
+
       </plugins>
     </pluginManagement>
   </build>
