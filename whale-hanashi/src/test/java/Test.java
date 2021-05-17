@@ -12,9 +12,8 @@ public class Test {
 
 class TestJobManager {
     public static void main(String[] args) {
-        JobManager.builder()
-            .config(ImmutableMap.of(
-                "port", "414"))
+        new JobManager(ImmutableMap.of(
+            "port", "414"))
 //            .afterStarted(() -> {
 //                new Thread() {
 //                    @SneakyThrows
@@ -24,7 +23,6 @@ class TestJobManager {
 //                    }
 //                }.start();
 //            })
-            .build()
             .run();
     }
 }
@@ -58,6 +56,7 @@ class TestDriver {
             .config(config)
             .plan(plan)
             .build();
+
         return driver;
     }
 
@@ -65,4 +64,9 @@ class TestDriver {
         val a = createDriver();
         a.run();
     }
+}
+
+
+class TestWork{
+
 }
