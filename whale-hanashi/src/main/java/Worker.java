@@ -18,10 +18,14 @@ public class Worker {
     SocketServer socketServer;
     List<Socket> socketClientList;
 
+    public Worker(Map config) {
+        this.config = config;
+    }
+
     @SneakyThrows
     public void start() {
         socketServer = new SocketServer(config);
-        socketServer.init();
+//        socketServer.init();
         while (true) {
             socketServer.accept();
             processWorker();

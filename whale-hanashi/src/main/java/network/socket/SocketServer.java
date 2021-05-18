@@ -29,6 +29,7 @@ public class SocketServer extends Server {
     @Override
     public void init() throws IOException {
         int port = Integer.parseInt(config.get("port"));
+        System.out.println(port);
         serverSocket = new ServerSocket(port);
     }
 
