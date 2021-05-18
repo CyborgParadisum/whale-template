@@ -2,31 +2,6 @@ import com.google.common.collect.ImmutableMap;
 import lombok.SneakyThrows;
 import lombok.val;
 
-public class Test {
-
-    public static void main(String[] args) throws Exception {
-
-
-    }
-}
-
-class TestJobManager {
-    public static void main(String[] args) {
-        new JobManager(ImmutableMap.of(
-            "port", "414"))
-//            .afterStarted(() -> {
-//                new Thread() {
-//                    @SneakyThrows
-//                    @Override
-//                    public void run() {
-//                        driver.run();
-//                    }
-//                }.start();
-//            })
-            .run();
-    }
-}
-
 class TestDriver {
     public static Driver createDriver() {
         Plan.MyFunc<Integer, Boolean> func = (Integer n) -> {
@@ -65,8 +40,27 @@ class TestDriver {
         a.run();
     }
 }
+class TestJobManager {
+    public static void main(String[] args) {
+        new JobManager(ImmutableMap.of(
+            "port", "414",
+            "workers","localhost:7001,localhost:7002"))
+            .run();
+    }
+}
 
+class TestWork1 {
+    public static void main(String[] args) {
+        new Worker(ImmutableMap.of(
+            "port", "7001"))
+            .start();
+    }
+}
 
-class TestWork{
-
+class TestWork2 {
+    public static void main(String[] args) {
+        new Worker(ImmutableMap.of(
+            "port", "7002"))
+            .start();
+    }
 }

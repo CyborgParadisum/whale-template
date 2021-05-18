@@ -1,3 +1,4 @@
+import javafx.util.Pair;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import lombok.val;
@@ -9,10 +10,8 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //@Builder
 @Log
@@ -33,10 +32,9 @@ public class JobManager {
 
     @SneakyThrows
     public void start() {
-        socketAtomic = new SocketAtomic(config);
-        socketAtomic.startServer();
+//        socketAtomic = new SocketAtomic(config);
+//        socketAtomic.startServer();
         socketServer = new SocketServer(config);
-        socketServer.init();
         isOpen = true;
     }
 
@@ -62,11 +60,17 @@ public class JobManager {
         Plan plan1 = new Plan(plan.start, end, plan.func);
         Plan plan2 = new Plan(end + 1, plan.end, plan.func);
 
-        String host = "localhost";
-        int port;
-        Socket socket1 = new Socket(host, 9001);
+
+        List<Pair<String, Integer>> address = Arrays.stream(config.get("workers")
+            .split(","))
+            .map(a -> {
+                val aa = a.split(":");
+                return new Pair<>(aa[0], Integer.parseInt(aa[1]));
+            })
+            .collect(Collectors.toList());
+        Socket socket1 = new Socket(address.get(0).getKey(), address.get(0).getValue());
         send(socket1, plan1);
-        Socket socket2 = new Socket(host, 9002);
+        Socket socket2 = new Socket(address.get(1).getKey(), address.get(1).getValue());
         send(socket2, plan2);
         val in1 = receive(socket1);
 
