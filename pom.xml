@@ -11,9 +11,9 @@
 
   <modules>
     <module>whale-core</module>
-    <module>whale-network</module>
+    <module>whale-com.whale.network</module>
     <module>whale-hanashi</module>
-    <module>whale-thrift-network</module>
+    <module>whale-thrift-com.whale.network</module>
   </modules>
 
   <properties>
@@ -38,6 +38,9 @@
 
     <!-- thrift version-->
     <thrift.version>0.13.0</thrift.version>
+
+    <!-- fast jackson -->
+    <fasterxml.jackson.version>2.10.0</fasterxml.jackson.version>
 
   </properties>
 
