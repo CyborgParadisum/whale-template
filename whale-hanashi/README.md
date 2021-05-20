@@ -1,10 +1,9 @@
 # 演示说明
 依次运行 test/java/com.whale.Test.java 中的
-- [com.whale.TestWork1](src/test/java/Test.java#L52-L58)
-- [com.whale.TestWork2](src/test/java/Test.java#L60-L66)
-- [com.whale.TestJobManager](src/test/java/Test.java#L43-L50)
-- [com.whale.TestDriver](src/test/java/Test.java#L5-L42)
-
+- [com.whale.TestWork1](src/test/java/com/whale/Test.java#L52-L58)
+- [com.whale.TestWork2](src/test/java/com/whale/Test.java#L60-L66)
+- [com.whale.TestJobManager](src/test/java/com/whale/Test.java#L43-L50)
+- [com.whale.TestDriver](src/test/java/com/whale/Test.java#L5-L42)
 
 ----
 # [其他不知道什么]

@@ -11,9 +11,9 @@
 
   <modules>
     <module>whale-core</module>
-    <module>whale-com.whale.network</module>
+    <module>whale-network</module>
     <module>whale-hanashi</module>
-    <module>whale-thrift-com.whale.network</module>
+    <module>whale-thrift-network</module>
   </modules>
 
   <properties>
