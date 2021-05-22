@@ -1,7 +1,5 @@
-package com.whale.network.netty.server;
+package com.whale.network.demo.netty.server;
 
-import com.whale.network.netty.client.RpcClient;
-import com.whale.network.netty.service.HelloServiceImpl;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 

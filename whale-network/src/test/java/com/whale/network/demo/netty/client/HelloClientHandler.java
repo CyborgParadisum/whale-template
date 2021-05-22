@@ -1,4 +1,4 @@
-package com.whale.network.netty.client;
+package com.whale.network.demo.netty.client;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

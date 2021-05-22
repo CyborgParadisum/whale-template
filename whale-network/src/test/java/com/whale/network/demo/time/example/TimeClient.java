@@ -1,4 +1,4 @@
-package com.whale.network.time.example;
+package com.whale.network.demo.time.example;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

@@ -1,4 +1,4 @@
-package com.whale.network.netty.server;
+package com.whale.network.demo.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

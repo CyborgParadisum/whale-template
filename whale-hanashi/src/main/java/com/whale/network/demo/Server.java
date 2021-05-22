@@ -1,4 +1,4 @@
-package com.whale.network;
+package com.whale.network.demo;
 
 import java.io.IOException;
 import java.io.InputStream;

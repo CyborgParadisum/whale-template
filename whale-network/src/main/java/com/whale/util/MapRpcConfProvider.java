@@ -11,7 +11,7 @@ public class MapRpcConfProvider extends RpcConfProvider {
 
   private Map<String, String> config;
 
-  MapRpcConfProvider(Map<String, String> config) {
+  public MapRpcConfProvider(Map<String, String> config) {
     this.config = config;
   }
 

@@ -1,10 +1,13 @@
 package com.whale.util;
 
 import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ServerChannel;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import java.util.concurrent.ThreadFactory;
@@ -60,7 +63,7 @@ public class NettyUtils {
    */
   public static EventLoopGroup createEventLoopGroup(int threadNumbers, String threadPoolPrefix) {
     ThreadFactory threadFactory = createThreadFactory(threadPoolPrefix);
-    return new EpollEventLoopGroup(threadNumbers);
+    return new NioEventLoopGroup(threadNumbers, threadFactory);
   }
 
   /**
@@ -69,7 +72,7 @@ public class NettyUtils {
    * @return Server channel
    */
   public static Class<? extends ServerChannel> getServerChannel() {
-    return EpollServerSocketChannel.class;
+    return NioServerSocketChannel.class;
   }
 
   public static ThreadFactory createThreadFactory(String threadPoolPrefix) {
@@ -93,6 +96,14 @@ public class NettyUtils {
     int availableCores = usableThreadCoreNum > 0 ?
         usableThreadCoreNum : Runtime.getRuntime().availableProcessors();
     return Math.min(availableCores, MAX_DEFAULT_NETTY_THREADS);
+  }
+
+  /** Returns the remote address on the channel or "&lt;unknown remote&gt;" if none exists. */
+  public static String getRemoteAddress(Channel channel) {
+    if (channel != null && channel.remoteAddress() != null) {
+      return channel.remoteAddress().toString();
+    }
+    return "<unknown remote>";
   }
 
 }

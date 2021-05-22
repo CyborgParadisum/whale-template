@@ -3,7 +3,7 @@ package com.whale;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import lombok.val;
-import com.whale.network.socket.SocketServer;
+import com.whale.network.demo.socket.SocketServer;
 
 import java.io.ObjectInputStream;
 import java.net.Socket;

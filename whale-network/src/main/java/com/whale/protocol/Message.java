@@ -2,14 +2,16 @@ package com.whale.protocol;
 
 import io.netty.buffer.ByteBuf;
 
-public class Message implements Encodable {
+public interface Message extends Encodable {
 
-  @Override
-  public int encodedLength() {
-    return 0;
-  }
-  @Override
-  public void encode(ByteBuf buf) {
+  /**
+   * 消息的类型，用以scala实现,为字段类型
+   */
+  MessageType type();
 
-  }
+  /**
+   * 消息体
+   */
+  ByteBuf body();
+
 }

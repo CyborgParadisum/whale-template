@@ -1,4 +1,4 @@
-package com.whale.network;
+package com.whale.network.demo;
 
 abstract public class Atomic {
 //    abstract public  void init() ;

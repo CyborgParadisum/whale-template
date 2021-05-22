@@ -1,8 +1,8 @@
-package com.whale.network.socket;
+package com.whale.network.demo.socket;
 
+import com.whale.network.demo.Server;
 import lombok.SneakyThrows;
 import lombok.val;
-import com.whale.network.Server;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +11,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 
-public class SocketClient extends Server {
+public class SocketServer extends Server {
 
     private ServerSocket serverSocket;
     private Socket socket;
+    private Socket socketClient;
 
     Map<String, String> config;
 
     @SneakyThrows
-    public SocketClient(Map<String, String> config) {
+    public SocketServer(Map<String, String> config) {
         this.config = config;
         init();
     }
@@ -27,12 +28,14 @@ public class SocketClient extends Server {
     @Override
     public void init() throws IOException {
         int port = Integer.parseInt(config.get("port"));
+        System.out.println(port);
         serverSocket = new ServerSocket(port);
     }
 
     @SneakyThrows
     public Socket accept() {
-        return serverSocket.accept();
+        socket = serverSocket.accept();
+        return socket;
     }
 
     @Override

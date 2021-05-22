@@ -1,4 +1,4 @@
-package com.whale.network.netty.service;
+package com.whale.network.demo.netty.service;
 
 public class HelloServiceImpl implements HelloService{
   @Override

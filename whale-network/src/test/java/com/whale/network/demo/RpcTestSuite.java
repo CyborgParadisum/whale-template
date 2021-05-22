@@ -1,13 +1,7 @@
-package com.whale.network;
+package com.whale.network.demo;
 
-import com.whale.network.netty.client.RpcClient;
-import com.whale.network.netty.server.RpcServer;
-import com.whale.network.netty.service.HelloService;
-import com.whale.network.time.example.TimeClient;
-import com.whale.network.time.example.TimeServer;
-import io.netty.channel.Channel;
-import java.io.IOException;
-import org.junit.After;
+import com.whale.network.demo.time.example.TimeClient;
+import com.whale.network.demo.time.example.TimeServer;
 import org.junit.Before;
 import org.junit.Test;
 

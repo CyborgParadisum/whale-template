@@ -4,8 +4,8 @@ import javafx.util.Pair;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
 import lombok.val;
-import com.whale.network.socket.SocketAtomic;
-import com.whale.network.socket.SocketServer;
+import com.whale.network.demo.socket.SocketAtomic;
+import com.whale.network.demo.socket.SocketServer;
 
 import java.io.IOException;
 import java.io.InputStream;

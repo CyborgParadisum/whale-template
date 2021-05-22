@@ -1,9 +1,9 @@
-package com.whale.network.socket;
+package com.whale.network.demo.socket;
 
 import com.sun.tools.javac.util.Pair;
+import com.whale.network.demo.Atomic;
 import lombok.SneakyThrows;
-import com.whale.network.Action;
-import com.whale.network.Atomic;
+import com.whale.network.demo.Action;
 
 import java.net.ServerSocket;
 import java.net.Socket;

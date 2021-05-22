@@ -1,4 +1,4 @@
-package com.whale.network;
+package com.whale.network.demo;
 
 /**
  * 先实现 tcp 长连接

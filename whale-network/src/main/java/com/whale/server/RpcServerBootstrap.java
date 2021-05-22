@@ -13,8 +13,8 @@ public interface RpcServerBootstrap {
    * customizes the channel to include new features, if need
    *
    * @param channel    the connected channel opened by the client
-   * @param rpcHandler the RPC handler for the server
+   * @param rpcChannelHandler the RPC handler for the server
    * @return the rpc handler to use for the channel
    */
-  RpcHandler doBootstrap(Channel channel, RpcHandler rpcHandler);
+  RpcChannelHandler doBootstrap(Channel channel, RpcChannelHandler rpcChannelHandler);
 }
