@@ -52,19 +52,19 @@ public class RpcServer implements Closeable {
           conf.preferDirectBufs(), true /* allow cache */, conf.serverThreads());
     }
 
-//    boolean shouldClose = true;
-//    try {
+    boolean shouldClose = true;
+    try {
       init(host, port);
-//      shouldClose = false;
-//    } finally {
-//      if (shouldClose) {
-//        try {
-//          this.close();
-//        } catch (IOException e) {
-//          logger.error("IOException should not have been thrown.", e);
-//        }
-//      }
-//    }
+      shouldClose = false;
+    } finally {
+      if (shouldClose) {
+        try {
+          this.close();
+        } catch (IOException e) {
+          logger.error("IOException should not have been thrown.", e);
+        }
+      }
+    }
 
   }
 
