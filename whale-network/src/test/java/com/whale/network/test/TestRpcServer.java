@@ -27,8 +27,9 @@ public class TestRpcServer {
   }
 
   @Test
-  public void testRpcServer() {
+  public void testRpcServer() throws InterruptedException {
     server = context.createRpcServer(hostName, port);
+//    server.syncCloseFuture(); /* this will sync close future */
   }
 
 //  @After

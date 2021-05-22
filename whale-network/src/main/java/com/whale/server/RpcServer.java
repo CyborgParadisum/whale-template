@@ -98,6 +98,11 @@ public class RpcServer implements Closeable {
     logger.warn("rpc server start on port: {}", port);
   }
 
+  public void syncCloseFuture() throws InterruptedException {
+    logger.info("syncCloseFuture");
+    channelFuture.channel().closeFuture().sync();
+  }
+
   private InetSocketAddress getAddress(String hostToBind, int portToBind) {
     if (hostToBind == null) {
       return new InetSocketAddress(portToBind);
