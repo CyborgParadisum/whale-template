@@ -15,5 +15,6 @@ public class RpcMessageDecoder extends MessageToMessageDecoder<Message> {
   @Override
   protected void decode(ChannelHandlerContext ctx, Message msg, List<Object> out) throws Exception {
     // todo
+    out.add(msg);
   }
 }

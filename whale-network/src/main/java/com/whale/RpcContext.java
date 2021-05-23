@@ -40,7 +40,6 @@ public class RpcContext {
     return conf;
   }
 
-
   // ---------------------------- utilities ---------------------------------------
 
   /**
@@ -57,6 +56,10 @@ public class RpcContext {
 
     return channelHandler;
   }
+  public RpcChannelHandler initializePipeline(SocketChannel channel) {
+    return initializePipeline(channel, rpcHandler);
+  }
+
 
   private RpcChannelHandler createChannelHandler(Channel channel, RpcHandler rpcHandler) {
     // todo 等待细节的实现

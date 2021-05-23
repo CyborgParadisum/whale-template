@@ -1,5 +1,6 @@
 package com.whale.util;
 
+import java.time.Duration;
 import java.util.NoSuchElementException;
 
 /**
@@ -41,4 +42,21 @@ public class RpcConf {
   public int serverThreads() {
     return 0;
   }
+
+  /**
+   * @param duration seconds of times
+   */
+  public int getClientConnectionTimeout(int duration) {
+    return getSecondsDuration(duration);
+  }
+  public int getClientConnectionTimeout() {
+    return getClientConnectionTimeout(120);
+  }
+
+
+  private static int getSecondsDuration(int duration) {
+    Duration s = Duration.ofSeconds(duration);
+    return (int) s.toMillis();
+  }
+
 }

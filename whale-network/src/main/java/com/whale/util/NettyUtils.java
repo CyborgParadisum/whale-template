@@ -8,6 +8,7 @@ import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.internal.PlatformDependent;
 import java.util.concurrent.ThreadFactory;
@@ -67,12 +68,19 @@ public class NettyUtils {
   }
 
   /**
-   * Epoll implementation firstly. further add other Server channel:
-   * e.g.: NIO implementation
+   * Epoll implementation firstly. further add other Server channel: e.g.: NIO implementation
+   *
    * @return Server channel
    */
   public static Class<? extends ServerChannel> getServerChannel() {
     return NioServerSocketChannel.class;
+  }
+
+  /**
+   * get client channel class
+   */
+  public static Class<? extends Channel> getClientChannel() {
+    return NioSocketChannel.class;
   }
 
   public static ThreadFactory createThreadFactory(String threadPoolPrefix) {
@@ -98,7 +106,9 @@ public class NettyUtils {
     return Math.min(availableCores, MAX_DEFAULT_NETTY_THREADS);
   }
 
-  /** Returns the remote address on the channel or "&lt;unknown remote&gt;" if none exists. */
+  /**
+   * Returns the remote address on the channel or "&lt;unknown remote&gt;" if none exists.
+   */
   public static String getRemoteAddress(Channel channel) {
     if (channel != null && channel.remoteAddress() != null) {
       return channel.remoteAddress().toString();

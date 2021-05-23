@@ -27,7 +27,7 @@ public class RpcChannelHandler extends SimpleChannelInboundHandler<Message> {
   @Override
   // 请不要直接 override channelRead
   protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
-
+    logger.info("msg" + msg);
   }
 
   @Override

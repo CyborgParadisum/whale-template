@@ -1,11 +1,16 @@
 package com.whale.network.test;
 
 import com.whale.RpcContext;
+import com.whale.client.RpcClient;
 import com.whale.server.NoOpRpcHandler;
+import com.whale.server.RpcHandler;
 import com.whale.server.RpcServer;
 import com.whale.util.MapRpcConfProvider;
 import com.whale.util.RpcConf;
+import io.netty.buffer.Unpooled;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Optional;
 import org.junit.After;
@@ -20,10 +25,20 @@ public class TestRpcServer {
   RpcServer server;
   RpcContext context;
 
+  RpcHandler rpcHandler;
+
   @Before
   public void init() {
     MapRpcConfProvider p = new MapRpcConfProvider(new HashMap<>());
     context = new RpcContext(new RpcConf(p), new NoOpRpcHandler());
+
+    rpcHandler = new RpcHandler() {
+      @Override
+      public void receive(RpcClient client, ByteBuffer message) {
+        String msg = Unpooled.wrappedBuffer(message).toString(StandardCharsets.UTF_8);
+
+      }
+    };
   }
 
   @Test
